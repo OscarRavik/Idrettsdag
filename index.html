@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Idrettsdag</title>
+    <link rel="stylesheet" href="CSS/CSSIndex.css">
+</head>
+<body>
+
+<header>
+    <nav>
+        <button onclick="visLagSide()" id="knappLag">Registrer Lag</button>
+        <button onclick="visElevSide()" id="knappElever">Registrer Elever</button>
+    </nav>
+</header>
+
+<main>
+    <div id="bildeDiv"></div>
+
+    <div id="mainContainer">
+    <div id="lagSide">
+        <h1>Registrer Lag:</h1>
+        <form action="" id="lagSkjema">
+            <label for="lagNavn">Lagnavn:</label>
+            <input type="text" id="lagNavn" required placeholder="Lagnavn" onclick="stopAnimasjon()">
+            <label for="idrettSelect">Velg idrett:</label>
+            <select name="idrett" id="idrettSelect" required>
+                <option value="" disabled selected>Idrett</option>
+            </select>
+            <label for="skoleSelect">Velg skole:</label>
+            <select name="skole" id="skoleSelect" required>
+                <option value="" disabled selected>Skole</option>
+            </select>
+            <button id="registreringLagKnapp" class="span">Registrer Lag</button>
+        </form>
+    </div>
+
+
+    <div id="elevSide">
+        <h1>Registrer elever på laget:</h1>
+        <form action="" id="elevSkjema">
+            <label for="elevNavn">Navn:</label>
+            <input type="text" id="elevNavn" placeholder="Ola Nordmann" onclick="stopAnimasjon()">
+            <label for="elevKlasse">Klasse:</label>
+            <input type="text" id="elevKlasse" placeholder="1STA" required>
+            <label for="elevLag">Lag:</label>
+            <select name="" id="elevLag" required>
+                <option value=""disabled selected>Lag</option>
+            </select>
+            <button id="registreringElevKnapp" class="span">Registrer</button>
+        </form>
+    </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+</main>
+
+<footer>Nettside laget av Oscar Ravik 2STA</footer>
+
+
+
+<script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+<script>
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyD2r3VVrks_y3u-Kcsx0rd51p9FAoN_MUg",
+        authDomain: "idrettsdag-ea205.firebaseapp.com",
+        databaseURL: "https://idrettsdag-ea205.firebaseio.com",
+        projectId: "idrettsdag-ea205",
+        storageBucket: "",
+        messagingSenderId: "588891648934"
+    };
+    firebase.initializeApp(config);
+</script>
+
+<script>
+
+    var idrettSelect = document.getElementById("idrettSelect");
+    var skoleSelect = document.getElementById("skoleSelect");
+    var lagNavnInp = document.getElementById("lagNavn");
+    var lagSkjema = document.getElementById("lagSkjema");
+    var elevNavnInp = document.getElementById("elevNavn");
+    var elevKlasseInp = document.getElementById("elevKlasse");
+    var elevLagSelect = document.getElementById("elevLag");
+    var elevSkjema = document.getElementById("elevSkjema");
+    var elevSide = document.getElementById("elevSide");
+    var lagSide = document.getElementById("lagSide");
+    var knappLag = document.getElementById("knappLag");
+    var knappElever = document.getElementById("knappElever");
+    var registreringElevKnapp = document.getElementById("registreringElevKnapp");
+    var registreringLagKnapp = document.getElementById("registreringLagKnapp");
+
+
+    var database = firebase.database();
+    var skoleDB = database.ref("skole");
+    var idrettDB = database.ref("idrett");
+    var lagDB = database.ref("lag");
+    var elevDB = database.ref("elev");
+
+    var LokalLagInfo = {};
+
+
+    function visIdrett(snapshot){
+        var idrettInfo = snapshot.val();
+
+        idrettSelect.innerHTML += `<option value=${idrettInfo.navn}>${idrettInfo.navn}</option>`
+    }
+
+    function visSkole(snapshot){
+        var skoleInfo = snapshot.val();
+
+        skoleSelect.innerHTML += `<option value=${skoleInfo.navn}>${skoleInfo.navn}</option>`
+
+    }
+
+    function registrerLag(evt) {
+        evt.preventDefault();
+
+        var lagNavn = lagNavnInp.value;
+        var skoleNavn = skoleSelect.value;
+        var idrettNavn = idrettSelect.value;
+
+        var nyttLag = database.ref("lag/" + lagNavn);
+
+        nyttLag.set (
+            {
+                "lagNavn" : lagNavn,
+                "skole" : skoleNavn,
+                "idrett" : idrettNavn
+            }
+        );
+
+        lagNavnInp.innerHTML = "";
+
+        registreringLagKnapp.style.animation = "registrering 2s";
+
+
+    }
+
+
+    function visLag(snapshot) {
+        var lagNavn = snapshot.key;
+        var lagInfo = snapshot.val();
+
+        elevLagSelect.innerHTML += `<option value=${lagNavn}>${lagNavn}</option>`;
+
+        LokalLagInfo[lagNavn] = lagInfo;
+    }
+
+    function registrerElev(evt){
+        evt.preventDefault();
+
+        var elevNavn = elevNavnInp.value;
+        var elevKlasse = elevKlasseInp.value;
+        var elevLag = elevLagSelect.value;
+        var lokalElevInfo = LokalLagInfo[elevLag];
+
+        var nyElev = database.ref("elev/" + elevNavn);
+
+        nyElev.set (
+            {
+                "navn" : elevNavn,
+                "klasse" : elevKlasse,
+                "lag" : elevLag,
+                "skole" : lokalElevInfo.skole,
+                "idrett" : lokalElevInfo.idrett
+            }
+        );
+
+        elevNavnInp.value = "";
+
+        registreringElevKnapp.style.animation = "registrering 2s";
+
+
+
+        console.log("Eleven er registrert")
+    }
+
+    function stopAnimasjon() {
+        registreringLagKnapp.style.animation = "";
+        registreringElevKnapp.style.animation = "";
+    }
+
+    function visElevSide() {
+        elevSide.style.display = "block";
+        lagSide.style.display = "none";
+        knappElever.style.textDecoration = "underline";
+        knappLag.style.textDecoration = "none";
+        registreringLagKnapp.style.animation = "";
+        registreringElevKnapp.style.animation = "";
+    }
+
+    function visLagSide() {
+        lagSide.style.display = "block";
+        elevSide.style.display = "none";
+        knappLag.style.textDecoration = "underline";
+        knappElever.style.textDecoration = "none";
+        registreringLagKnapp.style.animation = "";
+        registreringElevKnapp.style.animation = "";
+    }
+
+
+
+
+
+
+
+    idrettDB.on("child_added", visIdrett);
+    skoleDB.on("child_added", visSkole);
+    lagDB.on("child_added", visLag);
+    lagSkjema.onsubmit = registrerLag;
+    elevSkjema.onsubmit = registrerElev;
+    document.onload = visLagSide();
+
+
+</script>
+
+
+</body>
+</html>

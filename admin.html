@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Administrasjon</title>
+    <link rel="stylesheet" href="CSS/CSSAdmin.css">
+</head>
+<body>
+
+<header>
+    <nav>
+        <button onclick="visSkoleOgIdrettSide()" id="idrettKnapp">Legg til idrett/skole</button>
+        <button onclick="visLagSide()" id="lagKnapp">Lag</button>
+        <button onclick="visElevSide()" id="elevKnapp">Elever</button>
+    </nav>
+</header>
+
+<main>
+
+    <div id="skolerOgSport">
+
+        <div id="bildeDiv">
+
+        </div>
+
+        <div class="flexContainer">
+            <div class="mainContainer">
+        <form action="" id="idrettSkjema">
+            <label for="idrettInp">Legg til idrett:</label>
+            <input type="text" id="idrettInp" required>
+            <button class="span">Legg til</button>
+        </form>
+
+        <form action="" id="skoleSkjema">
+            <label for="skoleInp">Legg til skole:</label>
+            <input type="text" id="skoleInp" required>
+            <button class="span">Legg til</button>
+        </form>
+        </div>
+        </div>
+    </div>
+
+    <div id="lag">
+        <div class="verktoyLinje">
+
+            <select id="sorteringSelectorLag">
+                <option value="lagNavn">Navn</option>
+                <option value="skole">Skole</option>
+                <option value="idrett">Idrett</option>
+            </select>
+            <button onclick="sorterLag()">Sorter</button>
+
+            <label for="sokNavn">Søk etter navn</label>
+            <input type="text" id="sokNavnLag">
+            <button onclick="sokLagNavn()">Søk</button>
+            <button onclick="visAlleLag()">Vis alle</button>
+
+        </div>
+        <div class="scroll">
+        <table>
+            <thead>
+            <tr>
+                <td>Navn</td>
+                <td>Idrett</td>
+                <td>Skole</td>
+            </tr>
+            </thead>
+            <tbody id="lagTabell">
+
+            </tbody>
+        </table>
+        </div>
+
+    </div>
+
+    
+    <div id="elever">
+
+        <div class="verktoyLinje">
+        
+        <select id="sorteringSelectorElever">
+            <option value="navn">Navn</option>
+            <option value="klasse">Klasse</option>
+            <option value="skole">Skole</option>
+            <option value="idrett">Idrett</option>
+            <option value="lag" selected>Lag</option>
+        </select>
+        <button onclick="sorterElever()">Sorter</button>
+
+        <label for="sokNavn">Søk etter navn</label>
+        <input type="text" id="sokNavn">
+        <button onclick="sokElevNavn()">Søk</button>
+        <button onclick="visAlleElever()">Vis alle</button>
+
+        </div>
+
+        <div class="scroll">
+        <table>
+            <thead>
+            <tr>
+                <td>Navn</td>
+                <td>Klasse</td>
+                <td>Skole</td>
+                <td>Idrett</td>
+                <td>Lag</td>
+                <td></td>
+            </tr>
+            </thead>
+            <tbody id="elevTabell">
+
+            </tbody>
+        </table>
+        </div>
+
+    </div>
+
+</main>
+
+<footer>Nettside laget av Oscar Ravik 2STA</footer>
+
+
+<script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+<script>
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyD2r3VVrks_y3u-Kcsx0rd51p9FAoN_MUg",
+        authDomain: "idrettsdag-ea205.firebaseapp.com",
+        databaseURL: "https://idrettsdag-ea205.firebaseio.com",
+        projectId: "idrettsdag-ea205",
+        storageBucket: "",
+        messagingSenderId: "588891648934"
+    };
+    firebase.initializeApp(config);
+</script>
+
+<script>
+
+    var skoleInp = document.getElementById("skoleInp");
+    var idrettInp = document.getElementById("idrettInp");
+    var idrettSkjema = document.getElementById("idrettSkjema");
+    var skoleSkjema = document.getElementById("skoleSkjema");
+    var lagTabell = document.getElementById("lagTabell");
+    var elevTabell = document.getElementById("elevTabell");
+    var sorteringSelectElever = document.getElementById("sorteringSelectorElever");
+    var elevNavnInp = document.getElementById("sokNavn");
+    var skolerOgSportSide = document.getElementById("skolerOgSport");
+    var lagSide = document.getElementById("lag");
+    var elevSide = document.getElementById("elever");
+    var elevKnapp = document.getElementById("elevKnapp");
+    var lagKnapp = document.getElementById("lagKnapp");
+    var idrettKnapp = document.getElementById("idrettKnapp");
+    var sorteringSelectLag = document.getElementById("sorteringSelectorLag");
+    var lagNavnInp = document.getElementById("sokNavnLag");
+
+
+    var database = firebase.database();
+    var skoleDB = database.ref("skole");
+    var idrettDB = database.ref("idrett");
+    var lagDB = database.ref("lag");
+    var elevDB = database.ref("elev");
+
+    function leggTilSkole(evt) {
+        evt.preventDefault();
+
+        var nySkole ={
+            "navn" : skoleInp.value
+        };
+        skoleDB.push(nySkole);
+        skoleInp.value = "";
+    }
+
+    function leggTilIdrett(evt) {
+        evt.preventDefault();
+
+        var nyIdrett ={
+            "navn" : idrettInp.value
+        };
+        idrettDB.push(nyIdrett);
+        idrettInp.value = "";
+    }
+
+    function visLag(snapshot){
+        var lagNavn = snapshot.key;
+        var lagInfo = snapshot.val();
+
+        lagTabell.innerHTML +=
+            `<tr>
+            <td>${lagNavn}</td>
+            <td>${lagInfo.idrett}</td>
+            <td>${lagInfo.skole}</td>
+            </tr>`;
+
+        console.log(lagNavn);
+    }
+
+    function visElever(snapshot) {
+        var elevNavn = snapshot.key;
+        var elevInfo = snapshot.val();
+
+        elevTabell.innerHTML +=
+            `<tr>
+            <td>${elevNavn}</td>
+            <td>${elevInfo.klasse}</td>
+            <td>${elevInfo.skole}</td>
+            <td>${elevInfo.idrett}</td>
+            <td>${elevInfo.lag}</td>
+            <td><Button onclick="fjernElev()">Fjern</Button></td>
+            </tr>`;
+    }
+    
+    function sorterElever() {
+        elevTabell.innerHTML = "";
+        elevDB
+            .orderByChild(sorteringSelectElever.value)
+            .on("child_added", visElever);
+
+        console.log("sorterer elever");
+    }
+
+    function visAlleElever() {
+        elevTabell.innerHTML = "";
+        elevDB
+            .orderByChild("navn")
+            .on("child_added", visElever);
+
+        console.log("viser alle elever");
+    }
+
+    function sokElevNavn() {
+        elevTabell.innerHTML = "";
+
+        elevDB
+            .orderByChild("navn")
+            .equalTo(elevNavnInp.value)
+            .on("child_added", visElever);
+
+        console.log("Søker etter elev");
+    }
+
+    function sorterLag() {
+        lagTabell.innerHTML = "";
+        lagDB
+            .orderByChild(sorteringSelectLag.value)
+            .on("child_added", visLag);
+
+        console.log("sorterer lag");
+    }
+
+    function visAlleLag() {
+        lagTabell.innerHTML = "";
+        lagDB
+            .orderByChild("lagNavn")
+            .on("child_added", visLag);
+
+        console.log("viser alle lag");
+    }
+
+    function sokLagNavn() {
+        lagTabell.innerHTML = "";
+
+        lagDB
+            .orderByChild("lagNavn")
+            .equalTo(lagNavnInp.value)
+            .on("child_added", visLag);
+
+        console.log("Søker etter lag");
+    }
+
+    function visSkoleOgIdrettSide() {
+        skolerOgSportSide.style.display = "block";
+        elevSide.style.display = "none";
+        lagSide.style.display = "none";
+        idrettKnapp.style.textDecoration = "underline";
+        lagKnapp.style.textDecoration = "none";
+        elevKnapp.style.textDecoration = "none";
+    }
+
+    function visLagSide() {
+        skolerOgSportSide.style.display = "none";
+        elevSide.style.display = "none";
+        lagSide.style.display = "block";
+        idrettKnapp.style.textDecoration = "none";
+        lagKnapp.style.textDecoration = "underline";
+        elevKnapp.style.textDecoration = "none";
+    }
+
+    function visElevSide() {
+        skolerOgSportSide.style.display = "none";
+        elevSide.style.display = "block";
+        lagSide.style.display = "none";
+        idrettKnapp.style.textDecoration = "none";
+        lagKnapp.style.textDecoration = "none";
+        elevKnapp.style.textDecoration = "underline";
+    }
+
+
+    function fjernElev() {
+
+        skoleDB/"Oscar Ravik".remove();
+    }
+
+
+    skoleSkjema.onsubmit = leggTilSkole;
+    idrettSkjema.onsubmit = leggTilIdrett;
+    lagDB.on("child_added", visLag);
+    elevDB.on("child_added", visElever);
+    document.onload = visSkoleOgIdrettSide();
+
+
+</script>
+
+</body>
+</html>
