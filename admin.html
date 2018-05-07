@@ -8,7 +8,8 @@
 <body>
 
 <header>
-    <nav>
+    <nav id="navbar">
+        <img src="bilder/hamburgerKnapp.png" alt="hamburger" id="hamburger" onclick="visNavbar()">
         <button onclick="visSkoleOgIdrettSide()" id="idrettKnapp">Legg til idrett/skole</button>
         <button onclick="visLagSide()" id="lagKnapp">Lag</button>
         <button onclick="visElevSide()" id="elevKnapp">Elever</button>
@@ -151,6 +152,7 @@
     var idrettKnapp = document.getElementById("idrettKnapp");
     var sorteringSelectLag = document.getElementById("sorteringSelectorLag");
     var lagNavnInp = document.getElementById("sokNavnLag");
+    var hamburger = document.getElementById("hamburger");
 
 
     var database = firebase.database();
@@ -293,10 +295,25 @@
         elevKnapp.style.textDecoration = "underline";
     }
 
-
     function fjernElev() {
 
         skoleDB/"Oscar Ravik".remove();
+    }
+
+    function visNavbar() {
+        if (elevKnapp.style.display === "block"){
+            elevKnapp.style.display = "none";
+            lagKnapp.style.display = "none";
+            idrettKnapp.style.display = "none";
+            hamburger.style.transform = "rotate(0)";
+            console.log("Viser linker")
+        } else {
+            elevKnapp.style.display = "block";
+            lagKnapp.style.display = "block";
+            idrettKnapp.style.display = "block";
+            console.log("Fjerner linker");
+            hamburger.style.transform = "rotate(0.25turn)";
+        }
     }
 
 

@@ -13,7 +13,7 @@ html {
 body {
     min-height: 100%;
     display: grid;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: 81px 1fr auto;
 }
 
 button {
@@ -27,7 +27,7 @@ button:hover {
 }
 
 nav {
-    height: 80px;
+    height: 81px;
     background-color: #5c95c9;
     width: 100%;
     display: flex;
@@ -35,6 +35,9 @@ nav {
     justify-content: space-evenly;
     flex-grow: 0;
     border-bottom: 1px solid black;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 nav button {
@@ -43,8 +46,16 @@ nav button {
     background-color: transparent;
     border: none;
     transition: 0.5s;
+    height: 80px;         
 }
 
+#hamburger {
+    height: 60px;
+    width: 60px;
+    display: none;
+    margin: 10px;
+    transition: 0.5s;
+}
 
 
 .fill {
@@ -58,12 +69,11 @@ main {
 #bildeDiv {
     background-image: url("../bilder/adminBilde.jpg");
     width: 100%;
-    height: 300px;
+    height: 200px;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center top;
     margin: 0;
-
 }
 
 main img {
@@ -77,6 +87,7 @@ main div {
 main div * {
     margin: 15px;
 }
+
 
 main form {
     display: grid;
@@ -176,12 +187,26 @@ footer {
 }
 
 
+@media (max-width: 450px) {
+    nav {
+        flex-direction: column;
+        height: auto;
+    }
+    nav button {
+        display: none;
+        margin: auto;
+    }
+    #hamburger {
+        display: block;
+    }
+}
 
 @media (max-width: 300px) {
     main form {
         grid-template-columns: 1fr;
     }
 }
+
 
 .span {
     grid-column: span 2;
