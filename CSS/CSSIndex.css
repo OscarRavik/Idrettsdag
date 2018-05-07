@@ -108,13 +108,13 @@ main button {
 
 select {
     width: 120px;
-    height: 40px;
+    height: 30px;
     font-size: 15px;
 }
 
 [type=text] {
     width: 120px;
-    height: 40px;
+    height: 30px;
     font-size: 15px;
 }
 
