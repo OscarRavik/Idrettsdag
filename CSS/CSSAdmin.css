@@ -191,6 +191,9 @@ select, [type=text] {
     background-color: #f2f2f2;
     margin-top: 15px;
 }
+[type=text] {
+    padding: 5px;
+}
 
 main label {
     line-height: 30px;
@@ -211,6 +214,10 @@ table td {
     white-space: nowrap;
 }
 
+table tbody tr:nth-child(odd) {
+    background-color: lightgray;
+}
+
 
 table button {
     width: 100%;
@@ -218,6 +225,11 @@ table button {
     margin: 0;
     border: 0;
 }
+
+.blau {
+    background-color: #5c95c9;
+}
+
 
 footer {
     height: 40px;
@@ -267,6 +279,17 @@ footer {
     }
 }
 
+@keyframes fjernElev {
+    0% {
+        background-color: #5c95c9;
+    }
+    50% {
+        background-color: red;
+    }
+    100% {
+        background-color: #5c95c9;
+    }
+}
 
 .span {
     grid-column: span 2;

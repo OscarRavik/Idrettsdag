@@ -93,6 +93,28 @@ main form {
     grid-template-columns: repeat(2, 1fr);
 }
 
+#nbMelding {
+    display: none;
+    margin: 0;
+}
+h3  {
+    margin: 0;
+}
+
+#lagNavn:focus ~ #nbMelding {
+    display: block;
+}
+#lagNavn:focus ~ .idrettDissapear {
+    display: none;
+}
+
+
+main label {
+    line-height: 30px;
+    text-align: center;
+}
+
+
 main button {
     width: 80px;
     height: 40px;
@@ -116,6 +138,9 @@ select, [type=text] {
     font-size: 15px;
     color: black;
     background-color: #f2f2f2;
+}
+[type=text] {
+    padding: 5px;
 }
 
 

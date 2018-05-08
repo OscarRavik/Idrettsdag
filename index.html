@@ -22,9 +22,10 @@
         <h1>Registrer Lag:</h1>
         <form action="" id="lagSkjema">
             <label for="lagNavn">Lagnavn:</label>
-            <input type="text" id="lagNavn" required placeholder="Lagnavn" onclick="stopAnimasjon()">
-            <label for="idrettSelect">Velg idrett:</label>
-            <select name="idrett" id="idrettSelect" required>
+            <input type="text" id="lagNavn" required placeholder="Lagnavn">
+            <article id="nbMelding" class="span"><h3>NB! Lagnavn kan bare bestå av et ord!</h3></article>
+            <label for="idrettSelect" class="idrettDissapear">Velg idrett:</label>
+            <select name="idrett" id="idrettSelect" required class="idrettDissapear">
                 <option value="" disabled selected>Idrett</option>
             </select>
             <label for="skoleSelect">Velg skole:</label>
@@ -40,14 +41,14 @@
         <h1>Registrer elever på laget:</h1>
         <form action="" id="elevSkjema">
             <label for="elevNavn">Navn:</label>
-            <input type="text" id="elevNavn" placeholder="Ola Nordmann" onclick="stopAnimasjon()">
+            <input type="text" id="elevNavn" placeholder="Ola Nordmann"">
             <label for="elevKlasse">Klasse:</label>
             <input type="text" id="elevKlasse" placeholder="1STA" required>
             <label for="elevLag">Lag:</label>
             <select name="" id="elevLag" required>
-                <option value=""disabled selected>Lag</option>
+                <option value="" disabled selected>Lag</option>
             </select>
-            <button id="registreringElevKnapp" class="span">Registrer</button>
+            <button id="registreringElevKnapp" class="span">Registrer Elev</button>
         </form>
     </div>
     </div>
@@ -98,6 +99,7 @@
     var knappElever = document.getElementById("knappElever");
     var registreringElevKnapp = document.getElementById("registreringElevKnapp");
     var registreringLagKnapp = document.getElementById("registreringLagKnapp");
+
 
 
     var database = firebase.database();
@@ -177,17 +179,24 @@
 
         elevNavnInp.value = "";
 
-        registreringElevKnapp.style.animation = "registrering 2s";
+        fjernAnimasjon();
+        kjorAnimasjon();
 
 
 
         console.log("Eleven er registrert")
     }
 
-    function stopAnimasjon() {
-        registreringLagKnapp.style.animation = "";
+    function fjernAnimasjon() {
         registreringElevKnapp.style.animation = "";
     }
+    function kjorAnimasjon() {
+        setTimeout( function(){
+            registreringElevKnapp.style.animation = "registrering 2s";
+        }, 100 );
+    }
+
+
 
     function visElevSide() {
         elevSide.style.display = "block";

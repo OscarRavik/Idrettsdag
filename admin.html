@@ -30,6 +30,7 @@
 
         </div>
 
+
         <div class="flexContainer">
             <div class="mainContainer">
         <form action="" id="idrettSkjema">
@@ -116,7 +117,7 @@
                 <td class="fullWidthElev">Skole</td>
                 <td class="fullWidthElevTo">Idrett</td>
                 <td>Lag</td>
-                <td class="fullWidthElev"></td>
+                <td class="fullWidthElev, blau"></td>
             </tr>
             </thead>
             <tbody id="elevTabell">
@@ -129,7 +130,7 @@
 
 </main>
 
-<footer>Nettside laget av Oscar Ravik 2STA</footer>
+<footer id="footer">Nettside laget av Oscar Ravik 2STA</footer>
 
 
 <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
@@ -169,6 +170,9 @@
     var lagNavnInp = document.getElementById("sokNavnLag");
     var hamburgerLabel = document.getElementById("hamburgerLabel");
     var selectorNavnOgLag = document.getElementById("sokNavnOgLag");
+    var navbar = document.getElementById("navbar");
+    var footer = document.getElementById("footer");
+
 
 
 
@@ -242,6 +246,8 @@
             .orderByChild("navn")
             .on("child_added", visElever);
 
+        elevNavnInp.value = "";
+
         console.log("viser alle elever");
     }
 
@@ -270,6 +276,9 @@
         lagDB
             .orderByChild("lagNavn")
             .on("child_added", visLag);
+
+        lagNavnInp.value = "";
+
 
         console.log("viser alle lag");
     }
@@ -343,6 +352,19 @@
         elevDB.on("child_added", visElever);
 
         console.log("fjerner elev");
+
+        fjernElevAnimasjonEn();
+        fjernElevAnimasjonTo();
+    }
+    function fjernElevAnimasjonEn() {
+        navbar.style.animation = "";
+        footer.style.animation = "";
+    }
+    function fjernElevAnimasjonTo() {
+        setTimeout( function(){
+            navbar.style.animation = "fjernElev 1s";
+            footer.style.animation = "fjernElev 1s";
+        }, 100 );
     }
 
     /*
