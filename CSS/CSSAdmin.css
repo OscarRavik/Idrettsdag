@@ -12,15 +12,20 @@ html {
 
 body {
     min-height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
     display: grid;
     grid-template-rows: 81px 1fr auto;
 }
+
 
 button {
     transition: 0.3s;
 }
 
-button:focus {outline:0;}
+button:focus, select:focus, [type=text]:focus {outline:0;}
 
 button:hover {
     color: lightgray;
@@ -49,12 +54,37 @@ nav button {
     height: 80px;         
 }
 
+#elevKnappTo, #lagKnappTo, #idrettKnappTo {
+    display: none;
+    margin: auto;
+}
+
+
+nav [type=checkbox]{
+    display: none;
+}
+
+nav [type=checkbox]:checked ~ #elevKnappTo, nav [type=checkbox]:checked ~ #idrettKnappTo, nav [type=checkbox]:checked ~ #lagKnappTo{
+    display: block;
+}
+
+nav [type=checkbox]:checked ~ #elevKnapp, nav [type=checkbox]:checked ~ #idrettKnapp, nav [type=checkbox]:checked ~ #lagKnapp{
+    display: none;
+}
+
+
+
 #hamburger {
     height: 60px;
     width: 60px;
     display: none;
     margin: 10px;
-    transition: 0.5s;
+}
+#hamburgerLabel {
+    transition: 0.4s;
+    width: 80px;
+    height: 80px;
+    display: none;
 }
 
 
@@ -101,6 +131,9 @@ main button {
     border: black solid 1px;
     text-align: center;
     display: block;
+}
+
+#skolerOgSport button {
     margin: 15px auto auto auto;
 }
 
@@ -135,37 +168,47 @@ main table td {
 }
 .verktoyLinje * {
     flex-grow: 0;
-}
-.verktoyLinje label {
     line-height: 40px;
     text-align: center;
 }
+.verktoyLinje select {
+    display: block;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
 
 .scroll {
     max-height: 361px;
     overflow: auto;
 }
 
-select {
+select, [type=text] {
     width: 120px;
-    height: 40px;
-    font-size: 15px;      
+    height: 30px;
+    font-size: 15px;
+    color: black;
+    background-color: #f2f2f2;
+    margin-top: 15px;
 }
 
-[type=text] {
-    width: 120px;
-    font-size: 15px;
-    height: 40px;
+main label {
+    line-height: 30px;
+    text-align: center;
 }
+
                                      
 
 table {
     border: 1px solid black;
     border-collapse: collapse;
+    width: 100%;
 }
 table td {
     border: 1px solid black ;
     font-size: 15px;
+    width: 0.1%;
+    white-space: nowrap;
 }
 
 
@@ -192,12 +235,29 @@ footer {
         flex-direction: column;
         height: auto;
     }
-    nav button {
+    #elevKnapp, #lagKnapp, #idrettKnapp {
         display: none;
         margin: auto;
     }
-    #hamburger {
+
+    #hamburger, #hamburgerLabel {
         display: block;
+    }
+}
+
+
+@media (max-width: 850px) {
+    body .fullWidthElev {
+        display: none;
+    }
+}
+
+@media (max-width: 750px) {
+    .fullWidthLag {
+        display: none;
+    }
+    .fullWidthElevTo {
+        display: none;
     }
 }
 

@@ -9,10 +9,16 @@
 
 <header>
     <nav id="navbar">
-        <img src="bilder/hamburgerKnapp.png" alt="hamburger" id="hamburger" onclick="visNavbar()">
+        <input type="checkbox" id="hamburgerCheck" onclick="roterBurger()">
+        <label for="hamburgerCheck"
+               id="hamburgerLabel"><img src="bilder/hamburgerKnapp.png" alt="hamburger" id="hamburger"></label>
         <button onclick="visSkoleOgIdrettSide()" id="idrettKnapp">Legg til idrett/skole</button>
         <button onclick="visLagSide()" id="lagKnapp">Lag</button>
         <button onclick="visElevSide()" id="elevKnapp">Elever</button>
+        <button onclick="visSkoleOgIdrettSide(); visNavbar()" id="idrettKnappTo">Legg til idrett/skole</button>
+        <button onclick="visLagSide(); visNavbar()" id="lagKnappTo">Lag</button>
+        <button onclick="visElevSide(); visNavbar()" id="elevKnappTo">Elever</button>
+
     </nav>
 </header>
 
@@ -51,10 +57,10 @@
             </select>
             <button onclick="sorterLag()">Sorter</button>
 
-            <label for="sokNavn">Søk etter navn</label>
-            <input type="text" id="sokNavnLag">
-            <button onclick="sokLagNavn()">Søk</button>
-            <button onclick="visAlleLag()">Vis alle</button>
+            <label for="sokNavn" class="fullWidthLag">Søk etter navn</label>
+            <input type="text" id="sokNavnLag" class="fullWidthLag">
+            <button onclick="sokLagNavn()" class="fullWidthLag">Søk</button>
+            <button onclick="visAlleLag()" class="fullWidthLag">Vis alle</button>
 
         </div>
         <div class="scroll">
@@ -63,7 +69,7 @@
             <tr>
                 <td>Navn</td>
                 <td>Idrett</td>
-                <td>Skole</td>
+                <td class="fullWidthLag">Skole</td>
             </tr>
             </thead>
             <tbody id="lagTabell">
@@ -88,10 +94,16 @@
         </select>
         <button onclick="sorterElever()">Sorter</button>
 
-        <label for="sokNavn">Søk etter navn</label>
-        <input type="text" id="sokNavn">
-        <button onclick="sokElevNavn()">Søk</button>
-        <button onclick="visAlleElever()">Vis alle</button>
+        <label for="sokNavn" class="fullWidthElev">Søk etter:</label>
+            <select name="sok" id="sokNavnOgLag" class="fullWidthElev">
+                <option value="navn" selected>Navn</option>
+                <option value="lag">Lag</option>
+                <option value="skole" >Skole</option>
+                <option value="idrett" >Idrett</option>
+            </select>
+        <input type="text" id="sokNavn" class="fullWidthElev">
+        <button onclick="sokElevNavn()" class="fullWidthElev">Søk</button>
+        <button onclick="visAlleElever()" class="fullWidthElev">Vis alle</button>
 
         </div>
 
@@ -100,11 +112,11 @@
             <thead>
             <tr>
                 <td>Navn</td>
-                <td>Klasse</td>
-                <td>Skole</td>
-                <td>Idrett</td>
+                <td class="fullWidthElev">Klasse</td>
+                <td class="fullWidthElev">Skole</td>
+                <td class="fullWidthElevTo">Idrett</td>
                 <td>Lag</td>
-                <td></td>
+                <td class="fullWidthElev"></td>
             </tr>
             </thead>
             <tbody id="elevTabell">
@@ -150,9 +162,14 @@
     var elevKnapp = document.getElementById("elevKnapp");
     var lagKnapp = document.getElementById("lagKnapp");
     var idrettKnapp = document.getElementById("idrettKnapp");
+    var elevKnappTo = document.getElementById("elevKnappTo");
+    var lagKnappTo = document.getElementById("lagKnappTo");
+    var idrettKnappTo = document.getElementById("idrettKnappTo");
     var sorteringSelectLag = document.getElementById("sorteringSelectorLag");
     var lagNavnInp = document.getElementById("sokNavnLag");
-    var hamburger = document.getElementById("hamburger");
+    var hamburgerLabel = document.getElementById("hamburgerLabel");
+    var selectorNavnOgLag = document.getElementById("sokNavnOgLag");
+
 
 
     var database = firebase.database();
@@ -189,7 +206,7 @@
             `<tr>
             <td>${lagNavn}</td>
             <td>${lagInfo.idrett}</td>
-            <td>${lagInfo.skole}</td>
+            <td class="fullWidthLag">${lagInfo.skole}</td>
             </tr>`;
 
         console.log(lagNavn);
@@ -202,11 +219,11 @@
         elevTabell.innerHTML +=
             `<tr>
             <td>${elevNavn}</td>
-            <td>${elevInfo.klasse}</td>
-            <td>${elevInfo.skole}</td>
-            <td>${elevInfo.idrett}</td>
+            <td class="fullWidthElev">${elevInfo.klasse}</td>
+            <td class="fullWidthElev">${elevInfo.skole}</td>
+            <td class="fullWidthElevTo">${elevInfo.idrett}</td>
             <td>${elevInfo.lag}</td>
-            <td><Button onclick="fjernElev()">Fjern</Button></td>
+            <td class="fullWidthElev"><Button onclick="fjernElev('${elevNavn}')">Fjern</Button></td>
             </tr>`;
     }
     
@@ -232,7 +249,7 @@
         elevTabell.innerHTML = "";
 
         elevDB
-            .orderByChild("navn")
+            .orderByChild(selectorNavnOgLag.value)
             .equalTo(elevNavnInp.value)
             .on("child_added", visElever);
 
@@ -273,8 +290,11 @@
         elevSide.style.display = "none";
         lagSide.style.display = "none";
         idrettKnapp.style.textDecoration = "underline";
+        idrettKnappTo.style.textDecoration = "underline";
         lagKnapp.style.textDecoration = "none";
         elevKnapp.style.textDecoration = "none";
+        lagKnappTo.style.textDecoration = "none";
+        elevKnappTo.style.textDecoration = "none";
     }
 
     function visLagSide() {
@@ -282,8 +302,11 @@
         elevSide.style.display = "none";
         lagSide.style.display = "block";
         idrettKnapp.style.textDecoration = "none";
+        idrettKnappTo.style.textDecoration = "none";
         lagKnapp.style.textDecoration = "underline";
+        lagKnappTo.style.textDecoration = "underline";
         elevKnapp.style.textDecoration = "none";
+        elevKnappTo.style.textDecoration = "none";
     }
 
     function visElevSide() {
@@ -293,28 +316,82 @@
         idrettKnapp.style.textDecoration = "none";
         lagKnapp.style.textDecoration = "none";
         elevKnapp.style.textDecoration = "underline";
+        elevKnappTo.style.textDecoration = "underline";
+        idrettKnappTo.style.textDecoration = "none";
+        lagKnappTo.style.textDecoration = "none";
+
     }
 
-    function fjernElev() {
-
-        skoleDB/"Oscar Ravik".remove();
+    function roterBurger() {
+        if (hamburgerLabel.style.transform === "rotate(0.75turn)") {
+            hamburgerLabel.style.transform = "rotate(0)";
+            console.log("roterer Burger");
+        } else {
+            hamburgerLabel.style.transform = "rotate(0.75turn)";
+            console.log("roterer Burger");
+        }
     }
 
+    function fjernElev(elevNavn) {
+
+        var elev = database.ref("elev/" + elevNavn);
+
+        elev.remove();
+
+        elevTabell.innerHTML = "";
+
+        elevDB.on("child_added", visElever);
+
+        console.log("fjerner elev");
+    }
+
+    /*
     function visNavbar() {
-        if (elevKnapp.style.display === "block"){
+        if (elevKnappTo.style.display === "block") {
+            elevKnappTo.style.display = "none";
+            lagKnappTo.style.display = "none";
+            idrettKnappTo.style.display = "none";
             elevKnapp.style.display = "none";
             lagKnapp.style.display = "none";
             idrettKnapp.style.display = "none";
             hamburger.style.transform = "rotate(0)";
             console.log("Viser linker")
         } else {
-            elevKnapp.style.display = "block";
-            lagKnapp.style.display = "block";
-            idrettKnapp.style.display = "block";
+            elevKnappTo.style.display = "block";
+            lagKnappTo.style.display = "block";
+            idrettKnappTo.style.display = "block";
+            elevKnapp.style.display = "none";
+            lagKnapp.style.display = "none";
+            idrettKnapp.style.display = "none";
             console.log("Fjerner linker");
-            hamburger.style.transform = "rotate(0.25turn)";
+            hamburger.style.transform = "rotate(0.75turn)";
         }
     }
+
+    function resetNavbar() {
+        if (window.matchMedia('(width: 450px)').matches) {
+            if (elevKnappTo.style.display === "block") {
+                elevKnapp.style.display = "block";
+                lagKnapp.style.display = "block";
+                idrettKnapp.style.display = "block";
+                elevKnappTo.style.display = "none";
+                lagKnappTo.style.display = "none";
+                idrettKnappTo.style.display = "none";
+                console.log("viser horisontale linker");
+            } else {
+                elevKnapp.style.display = "none";
+                lagKnapp.style.display = "none";
+                idrettKnapp.style.display = "none";
+                elevKnappTo.style.display = "none";
+                lagKnappTo.style.display = "none";
+                idrettKnappTo.style.display = "none";
+                hamburger.style.transform = "rotate(0)";
+                console.log("fjerner horisontale linker");
+            }
+        }
+    }
+    */
+
 
 
     skoleSkjema.onsubmit = leggTilSkole;
@@ -322,7 +399,6 @@
     lagDB.on("child_added", visLag);
     elevDB.on("child_added", visElever);
     document.onload = visSkoleOgIdrettSide();
-
 
 </script>
 
