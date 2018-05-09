@@ -36,13 +36,13 @@
         <form action="" id="idrettSkjema">
             <label for="idrettInp">Legg til idrett:</label>
             <input type="text" id="idrettInp" required>
-            <button class="span">Legg til</button>
+            <button class="span" id="idrettRegistreringKnapp">Legg til</button>
         </form>
 
         <form action="" id="skoleSkjema">
             <label for="skoleInp">Legg til skole:</label>
             <input type="text" id="skoleInp" required>
-            <button class="span">Legg til</button>
+            <button class="span" id="skoleRegistreringKnapp">Legg til</button>
         </form>
         </div>
         </div>
@@ -172,6 +172,9 @@
     var selectorNavnOgLag = document.getElementById("sokNavnOgLag");
     var navbar = document.getElementById("navbar");
     var footer = document.getElementById("footer");
+    var skoleRegistreringKnapp = document.getElementById("skoleRegistreringKnapp");
+    var idrettRegistreringKnapp = document.getElementById("idrettRegistreringKnapp");
+
 
 
 
@@ -190,6 +193,9 @@
         };
         skoleDB.push(nySkole);
         skoleInp.value = "";
+
+        skoleKnappAnimasjonEn();
+        skoleKnappAnimasjonTo();
     }
 
     function leggTilIdrett(evt) {
@@ -200,6 +206,9 @@
         };
         idrettDB.push(nyIdrett);
         idrettInp.value = "";
+
+        idrettKnappAnimasjonEn();
+        idrettKnappAnimasjonTo();
     }
 
     function visLag(snapshot){
@@ -356,63 +365,39 @@
         fjernElevAnimasjonEn();
         fjernElevAnimasjonTo();
     }
+
     function fjernElevAnimasjonEn() {
-        navbar.style.animation = "";
-        footer.style.animation = "";
+        navbar.style.animation = "fjernElev 1s";
+        footer.style.animation = "fjernElev 1s";
     }
     function fjernElevAnimasjonTo() {
         setTimeout( function(){
-            navbar.style.animation = "fjernElev 1s";
-            footer.style.animation = "fjernElev 1s";
-        }, 100 );
+            navbar.style.animation = "";
+            footer.style.animation = "";
+        }, 1000 );
     }
 
-    /*
-    function visNavbar() {
-        if (elevKnappTo.style.display === "block") {
-            elevKnappTo.style.display = "none";
-            lagKnappTo.style.display = "none";
-            idrettKnappTo.style.display = "none";
-            elevKnapp.style.display = "none";
-            lagKnapp.style.display = "none";
-            idrettKnapp.style.display = "none";
-            hamburger.style.transform = "rotate(0)";
-            console.log("Viser linker")
-        } else {
-            elevKnappTo.style.display = "block";
-            lagKnappTo.style.display = "block";
-            idrettKnappTo.style.display = "block";
-            elevKnapp.style.display = "none";
-            lagKnapp.style.display = "none";
-            idrettKnapp.style.display = "none";
-            console.log("Fjerner linker");
-            hamburger.style.transform = "rotate(0.75turn)";
-        }
+    function skoleKnappAnimasjonTo() {
+        skoleRegistreringKnapp.style.animation = "leggTilSportSkole 1s";
+    }
+    function skoleKnappAnimasjonEn() {
+        setTimeout( function(){
+            skoleRegistreringKnapp.style.animation = "";
+        }, 1000 );
     }
 
-    function resetNavbar() {
-        if (window.matchMedia('(width: 450px)').matches) {
-            if (elevKnappTo.style.display === "block") {
-                elevKnapp.style.display = "block";
-                lagKnapp.style.display = "block";
-                idrettKnapp.style.display = "block";
-                elevKnappTo.style.display = "none";
-                lagKnappTo.style.display = "none";
-                idrettKnappTo.style.display = "none";
-                console.log("viser horisontale linker");
-            } else {
-                elevKnapp.style.display = "none";
-                lagKnapp.style.display = "none";
-                idrettKnapp.style.display = "none";
-                elevKnappTo.style.display = "none";
-                lagKnappTo.style.display = "none";
-                idrettKnappTo.style.display = "none";
-                hamburger.style.transform = "rotate(0)";
-                console.log("fjerner horisontale linker");
-            }
-        }
+    function idrettKnappAnimasjonEn() {
+        idrettRegistreringKnapp.style.animation = "leggTilSportSkole 1s";
     }
-    */
+    function idrettKnappAnimasjonTo() {
+        setTimeout( function(){
+            idrettRegistreringKnapp.style.animation = "";
+        }, 1000 );
+    }
+
+
+
+
 
 
 

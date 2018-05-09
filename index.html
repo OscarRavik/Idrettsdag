@@ -143,7 +143,8 @@
 
         lagNavnInp.innerHTML = "";
 
-        registreringLagKnapp.style.animation = "registrering 2s";
+        lagAnimasjonEn();
+        lagAnmiasjonTo();
 
 
     }
@@ -179,21 +180,30 @@
 
         elevNavnInp.value = "";
 
-        fjernAnimasjon();
-        kjorAnimasjon();
+        elevAnimasjonEn();
+        elevAnmiasjonTo();
 
 
 
         console.log("Eleven er registrert")
     }
 
-    function fjernAnimasjon() {
-        registreringElevKnapp.style.animation = "";
+    function elevAnimasjonEn() {
+        registreringElevKnapp.style.animation = "registrering 2s";
     }
-    function kjorAnimasjon() {
+    function elevAnmiasjonTo() {
         setTimeout( function(){
-            registreringElevKnapp.style.animation = "registrering 2s";
-        }, 100 );
+            registreringElevKnapp.style.animation = "";
+        }, 2000 );
+    }
+
+    function lagAnimasjonEn() {
+        registreringLagKnapp.style.animation = "registrering 2s";
+    }
+    function lagAnmiasjonTo() {
+        setTimeout( function(){
+            registreringLagKnapp.style.animation = "";
+        }, 2000 );
     }
 
 

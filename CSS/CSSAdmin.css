@@ -291,6 +291,18 @@ footer {
     }
 }
 
+@keyframes leggTilSportSkole {
+    0% {
+        background-color: #5c95c9;
+    }
+    50% {
+        background-color: greenyellow;
+    }
+    100% {
+        background-color: #5c95c9;
+    }
+}
+
 .span {
     grid-column: span 2;
 }
