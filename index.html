@@ -7,17 +7,23 @@
 </head>
 <body>
 
-<header>
-    <nav>
-        <button onclick="visLagSide()" id="knappLag">Registrer Lag</button>
-        <button onclick="visElevSide()" id="knappElever">Registrer Elever</button>
-    </nav>
-</header>
+<!-- Nav element som inneholder 2 knapper som hver kjører en funksjon når de blir trykket på, og funkjsonen viser
+siden knappen hører til-->
+<nav>
+    <button onclick="visLagSide()" id="knappLag">Registrer Lag</button>
+    <button onclick="visElevSide()" id="knappElever">Registrer Elever</button>
+</nav>
 
 <main>
+    <!-- Div som har er bilde som bakgrunn slik at bildet har samme høyde uten at det blir dratt, som ville sett rart
+     ut -->
     <div id="bildeDiv"></div>
 
+    <!-- En div som inneholder hovedinnholdet på siden, som er delt inn i to div'er som inneholder elementene som
+    brukes til å registrere lag og elever -->
     <div id="mainContainer">
+
+    <!-- Div som inneholder elementene som brukes til å registrere lagene -->
     <div id="lagSide">
         <h1>Registrer Lag:</h1>
         <form action="" id="lagSkjema">
@@ -36,7 +42,7 @@
         </form>
     </div>
 
-
+    <!-- Div som inneholder elementene som brukes til å registrere lagene -->
     <div id="elevSide">
         <h1>Registrer elever på laget:</h1>
         <form action="" id="elevSkjema">
@@ -85,6 +91,7 @@
 
 <script>
 
+    // Henter de ulike variablene som brukes i scriptet
     var idrettSelect = document.getElementById("idrettSelect");
     var skoleSelect = document.getElementById("skoleSelect");
     var lagNavnInp = document.getElementById("lagNavn");
@@ -101,22 +108,23 @@
     var registreringLagKnapp = document.getElementById("registreringLagKnapp");
 
 
-
+    // Henter databasene
     var database = firebase.database();
     var skoleDB = database.ref("skole");
     var idrettDB = database.ref("idrett");
     var lagDB = database.ref("lag");
-    var elevDB = database.ref("elev");
 
     var LokalLagInfo = {};
 
 
+    //Lyttefunksjon som viser de ulike idrettene som options i selektoren, som hører på idrettsdatabasen
     function visIdrett(snapshot){
         var idrettInfo = snapshot.val();
 
         idrettSelect.innerHTML += `<option value=${idrettInfo.navn}>${idrettInfo.navn}</option>`
     }
 
+    //Lyttefunksjon som viser de ulike skolene som options i select-elementet, som hører på skooledatabasen
     function visSkole(snapshot){
         var skoleInfo = snapshot.val();
 
@@ -124,6 +132,7 @@
 
     }
 
+    //Lyttefunksjon som registrerer lagene
     function registrerLag(evt) {
         evt.preventDefault();
 
@@ -141,29 +150,35 @@
             }
         );
 
+        //Fjerner det som står i inputfeltet
         lagNavnInp.innerHTML = "";
 
+        //Kjører to animasjoner når funksjonen kjører
         lagAnimasjonEn();
         lagAnmiasjonTo();
 
 
     }
 
+    //Lyttefunksjon som viser lagene på Elevsiden som options i select-elementet, slik at elevene kan velge lag
     function visLag(snapshot) {
         var lagNavn = snapshot.key;
         var lagInfo = snapshot.val();
 
         elevLagSelect.innerHTML += `<option value=${lagNavn}>${lagNavn}</option>`;
 
+        //Lagrer variablen lagInfo som en lokal database slik at informasjonen kan brukes når elever registreres
         LokalLagInfo[lagNavn] = lagInfo;
     }
 
+    //Lyttefunksjon som registrerer lagene
     function registrerElev(evt){
         evt.preventDefault();
 
         var elevNavn = elevNavnInp.value;
         var elevKlasse = elevKlasseInp.value;
         var elevLag = elevLagSelect.value;
+        //Bruker informasjon fra laget til å gi informasjon til elevene
         var lokalElevInfo = LokalLagInfo[elevLag];
 
         var nyElev = database.ref("elev/" + elevNavn);
@@ -178,28 +193,33 @@
             }
         );
 
+        //Tømmer inputfeltet
         elevNavnInp.value = "";
 
+        //kjører to animasjoner når funksjonen kjører
         elevAnimasjonEn();
         elevAnmiasjonTo();
 
 
 
-        console.log("Eleven er registrert")
     }
 
+    //Animasjon som angir en animasjon til knappen
     function elevAnimasjonEn() {
         registreringElevKnapp.style.animation = "registrering 2s";
     }
+    //Animasjon som fjerner animasjonen fra knappen etter 2 sekunder, så lang tid den første animasjonen tar
     function elevAnmiasjonTo() {
         setTimeout( function(){
             registreringElevKnapp.style.animation = "";
         }, 2000 );
     }
 
+    //Animasjon som angir en animasjon til knappen
     function lagAnimasjonEn() {
         registreringLagKnapp.style.animation = "registrering 2s";
     }
+    //Animasjon som fjerner animasjonen fra knappen etter 2 sekunder, så lang tid den første animasjonen tar
     function lagAnmiasjonTo() {
         setTimeout( function(){
             registreringLagKnapp.style.animation = "";
@@ -207,38 +227,39 @@
     }
 
 
-
+    //funksjon som viser elevsiden
     function visElevSide() {
+        //Endrer display-verdien til de to ulike div-elementene i main containeren
         elevSide.style.display = "block";
         lagSide.style.display = "none";
+        //Endrer så navigasjonsknappene viser hvilken side som er aktiv
         knappElever.style.textDecoration = "underline";
         knappLag.style.textDecoration = "none";
-        registreringLagKnapp.style.animation = "";
-        registreringElevKnapp.style.animation = "";
     }
 
+    //funksjon som viser lagsiden
     function visLagSide() {
+        //Endrer display-verdien til de to ulike div-elementene i main containeren
         lagSide.style.display = "block";
         elevSide.style.display = "none";
+        //Endrer så navigasjonsknappene viser hvilken side som er aktiv
         knappLag.style.textDecoration = "underline";
         knappElever.style.textDecoration = "none";
-        registreringLagKnapp.style.animation = "";
-        registreringElevKnapp.style.animation = "";
     }
 
-
-
-
-
-
-
-
-
+    //kjører funksjonen visIdrett når det blir lagt til objekter i idrett-databasen
     idrettDB.on("child_added", visIdrett);
+    //kjører funksjonen visSkole når det blir lagt til objekter i skole-databasen
     skoleDB.on("child_added", visSkole);
+    //kjører funksjonen visLag når det blir lagt til objekter i lag-databasen
     lagDB.on("child_added", visLag);
+
+    //kjører funksjonen registrerLag når lagskjemaet blir registrert
     lagSkjema.onsubmit = registrerLag;
+    //kjører funksjonen registrerElev når elevskjemaet blir registrert
     elevSkjema.onsubmit = registrerElev;
+
+    //kjører funksjonen visLagSide når nettsiden lastes inn
     document.onload = visLagSide();
 
 

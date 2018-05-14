@@ -17,7 +17,7 @@ body {
     padding: 0;
     overflow-x: hidden;
     display: grid;
-    grid-template-rows: 81px 1fr auto;
+    grid-template-rows: 81px 1fr 40px;
 }
 
 
@@ -25,6 +25,7 @@ button {
     transition: 0.3s;
 }
 
+/* Gjør så man ikke får en blå ring rundt elementene når de blir trykket på  */
 button:focus, select:focus, [type=text]:focus {outline:0;}
 
 button:hover {
@@ -59,7 +60,7 @@ nav button {
     margin: auto;
 }
 
-
+/* Gjør så man ser navbaren når hamburgerknappen blir trykket på  */
 nav [type=checkbox]{
     display: none;
 }
@@ -94,8 +95,11 @@ nav [type=checkbox]:checked ~ #elevKnapp, nav [type=checkbox]:checked ~ #idrettK
 
 main {
     flex-grow: 1;
+    margin-top: 81px;
+    height: auto;
 }
 
+/* Endrer bakgrunnsbildet til diven slik at det blir like høyt og bredt selv om nettsiden blir smalere */
 #bildeDiv {
     background-image: url("../bilder/adminBilde.jpg");
     width: 100%;
@@ -214,6 +218,10 @@ table td {
     white-space: nowrap;
 }
 
+#elever table thead td:last-child {
+    background-color: #5c95c9;
+}
+
 table tbody tr:nth-child(odd) {
     background-color: lightgray;
 }
@@ -226,9 +234,6 @@ table button {
     border: 0;
 }
 
-.blau {
-    background-color: #5c95c9;
-}
 
 
 footer {
@@ -239,8 +244,27 @@ footer {
     text-align: center;
     line-height: 40px;
     border-top: 1px solid black;
+    grid-row: 3/4;
 }
 
+/* Tilpasser nettsiden til ulike smalere formater */
+@media (max-width: 850px) {
+    body .fullWidthElev {
+        display: none;
+    }
+    #elever table thead td:last-child {
+        background-color: white;
+    }
+}
+
+@media (max-width: 750px) {
+    .fullWidthLag {
+        display: none;
+    }
+    .fullWidthElevTo {
+        display: none;
+    }
+}
 
 @media (max-width: 450px) {
     nav {
@@ -258,27 +282,14 @@ footer {
 }
 
 
-@media (max-width: 850px) {
-    body .fullWidthElev {
-        display: none;
-    }
-}
-
-@media (max-width: 750px) {
-    .fullWidthLag {
-        display: none;
-    }
-    .fullWidthElevTo {
-        display: none;
-    }
-}
-
 @media (max-width: 300px) {
     main form {
         grid-template-columns: 1fr;
     }
 }
 
+
+/* Animasjon til navbar og footer når en elev blir fjernet */
 @keyframes fjernElev {
     0% {
         background-color: #5c95c9;
@@ -291,6 +302,7 @@ footer {
     }
 }
 
+/* Animasjon til knappene når man legger til en skole eller sport */
 @keyframes leggTilSportSkole {
     0% {
         background-color: #5c95c9;

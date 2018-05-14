@@ -7,48 +7,66 @@
 </head>
 <body>
 
-<header>
-    <nav id="navbar">
-        <input type="checkbox" id="hamburgerCheck" onclick="roterBurger()">
-        <label for="hamburgerCheck"
-               id="hamburgerLabel"><img src="bilder/hamburgerKnapp.png" alt="hamburger" id="hamburger"></label>
-        <button onclick="visSkoleOgIdrettSide()" id="idrettKnapp">Legg til idrett/skole</button>
-        <button onclick="visLagSide()" id="lagKnapp">Lag</button>
-        <button onclick="visElevSide()" id="elevKnapp">Elever</button>
-        <button onclick="visSkoleOgIdrettSide(); visNavbar()" id="idrettKnappTo">Legg til idrett/skole</button>
-        <button onclick="visLagSide(); visNavbar()" id="lagKnappTo">Lag</button>
-        <button onclick="visElevSide(); visNavbar()" id="elevKnappTo">Elever</button>
+<!-- Nav-element, er to knapper for hver side, de 3 første vises når siden er bred, og de 3 siste vises når siden er
+smal, enderes med CSS og ikke javascript. Alle knappene kjører en funksjon når de blir trykket på, og den funksjonen
+viser den siden knappen hører til
+ -->
+<nav id="navbar">
+    <input type="checkbox" id="hamburgerCheck" onclick="roterBurger()">
+    <label for="hamburgerCheck"
+           id="hamburgerLabel"><img src="bilder/hamburgerKnapp.png" alt="hamburger" id="hamburger"></label>
+    <button onclick="visSkoleOgIdrettSide()" id="idrettKnapp">Legg til idrett/skole</button>
+    <button onclick="visLagSide()" id="lagKnapp">Lag</button>
+    <button onclick="visElevSide()" id="elevKnapp">Elever</button>
+    <button onclick="visSkoleOgIdrettSide(); visNavbar()" id="idrettKnappTo">Legg til idrett/skole</button>
+    <button onclick="visLagSide(); visNavbar()" id="lagKnappTo">Lag</button>
+    <button onclick="visElevSide(); visNavbar()" id="elevKnappTo">Elever</button>
 
-    </nav>
-</header>
+</nav>
+
 
 <main>
 
+    <!-- Div som inneholder elementene som brukes til å legge til skoler og idretter -->
     <div id="skolerOgSport">
 
+        <!-- Div som har er bilde som bakgrunn slik at bildet har samme høyde uten at det blir dratt, som ville sett rart
+        ut -->
         <div id="bildeDiv">
 
         </div>
 
-
+        <!-- Div som midtstiller inneholdet i diven under-->
         <div class="flexContainer">
-            <div class="mainContainer">
-        <form action="" id="idrettSkjema">
-            <label for="idrettInp">Legg til idrett:</label>
-            <input type="text" id="idrettInp" required>
-            <button class="span" id="idrettRegistreringKnapp">Legg til</button>
-        </form>
 
-        <form action="" id="skoleSkjema">
-            <label for="skoleInp">Legg til skole:</label>
-            <input type="text" id="skoleInp" required>
-            <button class="span" id="skoleRegistreringKnapp">Legg til</button>
-        </form>
+            <!-- Div som har display grid slik at nettsiden kan tilpasses smalere skjermer -->
+            <div class="mainContainer">
+
+                <!-- skjema som legger til idretter -->
+                <form action="" id="idrettSkjema">
+                <label for="idrettInp">Legg til idrett:</label>
+                <input type="text" id="idrettInp" required>
+                <button class="span" id="idrettRegistreringKnapp">Legg til</button>
+                </form>
+
+                <!-- skjema som legger til skoler -->
+                <form action="" id="skoleSkjema">
+                    <label for="skoleInp">Legg til skole:</label>
+                    <input type="text" id="skoleInp" required>
+                    <button class="span" id="skoleRegistreringKnapp">Legg til</button>
+                </form>
+
+            </div>
+
         </div>
-        </div>
+
     </div>
 
+
+    <!-- Div som inneholder elementene som brukes til å vise lag-->
     <div id="lag">
+
+        <!-- Div som inneholder elementer som brukes til å sortere og søke etter elever -->
         <div class="verktoyLinje">
 
             <select id="sorteringSelectorLag">
@@ -64,6 +82,10 @@
             <button onclick="visAlleLag()" class="fullWidthLag">Vis alle</button>
 
         </div>
+
+        <!-- Div som inneholder en tabell med alle elevene, har en bestemt høyde som gjør at man kan scrolle gjennom
+        tabellen
+         -->
         <div class="scroll">
         <table>
             <thead>
@@ -81,33 +103,37 @@
 
     </div>
 
-    
+    <!-- Div som inneholder elementene som brukes til å vise elever-->
     <div id="elever">
 
+        <!-- Div som inneholder elementer som brukes til å sortere og søke etter elever -->
         <div class="verktoyLinje">
-        
-        <select id="sorteringSelectorElever">
-            <option value="navn">Navn</option>
-            <option value="klasse">Klasse</option>
-            <option value="skole">Skole</option>
-            <option value="idrett">Idrett</option>
-            <option value="lag" selected>Lag</option>
-        </select>
-        <button onclick="sorterElever()">Sorter</button>
 
-        <label for="sokNavn" class="fullWidthElev">Søk etter:</label>
-            <select name="sok" id="sokNavnOgLag" class="fullWidthElev">
-                <option value="navn" selected>Navn</option>
-                <option value="lag">Lag</option>
-                <option value="skole" >Skole</option>
-                <option value="idrett" >Idrett</option>
+            <select id="sorteringSelectorElever">
+                <option value="navn">Navn</option>
+                <option value="klasse">Klasse</option>
+                <option value="skole">Skole</option>
+                <option value="idrett">Idrett</option>
+                <option value="lag" selected>Lag</option>
             </select>
-        <input type="text" id="sokNavn" class="fullWidthElev">
-        <button onclick="sokElevNavn()" class="fullWidthElev">Søk</button>
-        <button onclick="visAlleElever()" class="fullWidthElev">Vis alle</button>
+            <button onclick="sorterElever()">Sorter</button>
+
+            <label for="sokNavn" class="fullWidthElev">Søk etter:</label>
+                <select name="sok" id="sokNavnOgLag" class="fullWidthElev">
+                    <option value="navn" selected>Navn</option>
+                    <option value="lag">Lag</option>
+                    <option value="skole" >Skole</option>
+                    <option value="idrett" >Idrett</option>
+                </select>
+            <input type="text" id="sokNavn" class="fullWidthElev">
+            <button onclick="sokElevNavn()" class="fullWidthElev">Søk</button>
+            <button onclick="visAlleElever()" class="fullWidthElev">Vis alle</button>
 
         </div>
 
+        <!-- Div som inneholder en tabell med alle elevene, har en bestemt høyde som gjør at man kan scrolle gjennom
+        tabellen
+         -->
         <div class="scroll">
         <table>
             <thead>
@@ -117,7 +143,7 @@
                 <td class="fullWidthElev">Skole</td>
                 <td class="fullWidthElevTo">Idrett</td>
                 <td>Lag</td>
-                <td class="fullWidthElev, blau"></td>
+                <td class="fullWidthElev"></td>
             </tr>
             </thead>
             <tbody id="elevTabell">
@@ -149,6 +175,7 @@
 
 <script>
 
+    // Henter de ulike variablene som brukes i scriptet
     var skoleInp = document.getElementById("skoleInp");
     var idrettInp = document.getElementById("idrettInp");
     var idrettSkjema = document.getElementById("idrettSkjema");
@@ -178,13 +205,14 @@
 
 
 
-
+    // Henter databasene
     var database = firebase.database();
     var skoleDB = database.ref("skole");
     var idrettDB = database.ref("idrett");
     var lagDB = database.ref("lag");
     var elevDB = database.ref("elev");
 
+    //lyttefunksjon som legger til skolene
     function leggTilSkole(evt) {
         evt.preventDefault();
 
@@ -192,12 +220,16 @@
             "navn" : skoleInp.value
         };
         skoleDB.push(nySkole);
+
+        //tømmer input feltet
         skoleInp.value = "";
 
+        //kjører to animasjoner når funksjonen kjører
         skoleKnappAnimasjonEn();
         skoleKnappAnimasjonTo();
     }
 
+    //lyttefunksjon som legger til idrettene
     function leggTilIdrett(evt) {
         evt.preventDefault();
 
@@ -205,12 +237,16 @@
             "navn" : idrettInp.value
         };
         idrettDB.push(nyIdrett);
+
+        //tømmer input feltet
         idrettInp.value = "";
 
+        //kjører to animasjoner når funksjonen kjører
         idrettKnappAnimasjonEn();
         idrettKnappAnimasjonTo();
     }
 
+    //lyttefunksjon som viser lagene i tabellen
     function visLag(snapshot){
         var lagNavn = snapshot.key;
         var lagInfo = snapshot.val();
@@ -222,13 +258,15 @@
             <td class="fullWidthLag">${lagInfo.skole}</td>
             </tr>`;
 
-        console.log(lagNavn);
     }
 
+    //lyttefunksjon som viser elevene i tabellen
     function visElever(snapshot) {
         var elevNavn = snapshot.key;
         var elevInfo = snapshot.val();
 
+        // legger til en knapp helt til høyre i tabellen som bruker elevNavn som argument når den kjører funksjonen fjernElev, som den gjør
+        // når knappen blir trykket på
         elevTabell.innerHTML +=
             `<tr>
             <td>${elevNavn}</td>
@@ -239,18 +277,24 @@
             <td class="fullWidthElev"><Button onclick="fjernElev('${elevNavn}')">Fjern</Button></td>
             </tr>`;
     }
-    
+
+    //funksjon som sorterer elevene etter verdien til selector-elementet
     function sorterElever() {
+        //tømmer tabellen så det ikke blor dobbelt opp med navn
         elevTabell.innerHTML = "";
+
         elevDB
             .orderByChild(sorteringSelectElever.value)
             .on("child_added", visElever);
 
-        console.log("sorterer elever");
+        console.log("sorterer elever etter " + sorteringSelectElever.value);
     }
 
+    //funksjon som viser alle elevene, sorteres da etter navn
     function visAlleElever() {
+        //tømmer tabellen så det ikke blor dobbelt opp med navn
         elevTabell.innerHTML = "";
+
         elevDB
             .orderByChild("navn")
             .on("child_added", visElever);
@@ -260,7 +304,9 @@
         console.log("viser alle elever");
     }
 
+    //funksjon som Søker etter elever ved å bare vise elever som har en navn-verdi som er lik det som er skrevet inn i inputfeltet
     function sokElevNavn() {
+        //tømmer tabellen så det ikke blor dobbelt opp med navn
         elevTabell.innerHTML = "";
 
         elevDB
@@ -271,17 +317,23 @@
         console.log("Søker etter elev");
     }
 
+    //funksjon som sorterer lagene etter verdien til selector-elementet
     function sorterLag() {
+        //tømmer tabellen så det ikke blor dobbelt opp med navn
         lagTabell.innerHTML = "";
+
         lagDB
             .orderByChild(sorteringSelectLag.value)
             .on("child_added", visLag);
 
-        console.log("sorterer lag");
+        console.log("sorterer lag etter " + sorteringSelectLag.value);
     }
 
+    //funksjon som viser alle lag, sorteres da etter navn
     function visAlleLag() {
+        //tømmer tabellen så det ikke blor dobbelt opp med navn
         lagTabell.innerHTML = "";
+
         lagDB
             .orderByChild("lagNavn")
             .on("child_added", visLag);
@@ -292,7 +344,9 @@
         console.log("viser alle lag");
     }
 
+    //funksjon som Søker etter lag ved å bare vise lag som har en navn-verdi som er lik det som er skrevet inn i inputfeltet
     function sokLagNavn() {
+        //tømmer tabellen så det ikke blor dobbelt opp med navn
         lagTabell.innerHTML = "";
 
         lagDB
@@ -303,10 +357,14 @@
         console.log("Søker etter lag");
     }
 
+    //funksjon som viser skole og idrett siden
     function visSkoleOgIdrettSide() {
+        //endrer display-verdien til sidene
         skolerOgSportSide.style.display = "block";
         elevSide.style.display = "none";
         lagSide.style.display = "none";
+
+        //endrer stylen til knappene i navbaren for å se hvilken side som er aktive
         idrettKnapp.style.textDecoration = "underline";
         idrettKnappTo.style.textDecoration = "underline";
         lagKnapp.style.textDecoration = "none";
@@ -315,10 +373,14 @@
         elevKnappTo.style.textDecoration = "none";
     }
 
+    //funksjon som viser skole og idrett siden
     function visLagSide() {
+        //endrer display-verdien til sidene
         skolerOgSportSide.style.display = "none";
         elevSide.style.display = "none";
         lagSide.style.display = "block";
+
+        //endrer stylen til knappene i navbaren for å se hvilken side som er aktive
         idrettKnapp.style.textDecoration = "none";
         idrettKnappTo.style.textDecoration = "none";
         lagKnapp.style.textDecoration = "underline";
@@ -327,10 +389,14 @@
         elevKnappTo.style.textDecoration = "none";
     }
 
+    //funksjon som viser skole og idrett siden
     function visElevSide() {
+        //endrer display-verdien til sidene
         skolerOgSportSide.style.display = "none";
         elevSide.style.display = "block";
         lagSide.style.display = "none";
+
+        //endrer stylen til knappene i navbaren for å se hvilken side som er aktive
         idrettKnapp.style.textDecoration = "none";
         lagKnapp.style.textDecoration = "none";
         elevKnapp.style.textDecoration = "underline";
@@ -340,6 +406,7 @@
 
     }
 
+    //animasjon som kjører når man trykker på hamburgerknappen når navbaren er smal
     function roterBurger() {
         if (hamburgerLabel.style.transform === "rotate(0.75turn)") {
             hamburgerLabel.style.transform = "rotate(0)";
@@ -350,26 +417,34 @@
         }
     }
 
+    //funksjon som bruker elevNavn som argument for å fjerne eleven
     function fjernElev(elevNavn) {
 
+        //elevNavn er navnet til en elev, definerer variablen elev som et objekt i elev-databasen som har elevNavn som primærnøkkel
         var elev = database.ref("elev/" + elevNavn);
 
+        //fjerner eleven
         elev.remove();
 
+        //tømmer tabellen
         elevTabell.innerHTML = "";
 
+        //legger til alle elevene som når er i tabellen
         elevDB.on("child_added", visElever);
 
         console.log("fjerner elev");
 
+        //kjører to animasjoner når funksjonen kjører
         fjernElevAnimasjonEn();
         fjernElevAnimasjonTo();
     }
 
+    //funksjon som gir elementene en animasjon
     function fjernElevAnimasjonEn() {
         navbar.style.animation = "fjernElev 1s";
         footer.style.animation = "fjernElev 1s";
     }
+    //funksjon som fjerner animasjonen fra elementene
     function fjernElevAnimasjonTo() {
         setTimeout( function(){
             navbar.style.animation = "";
@@ -377,34 +452,39 @@
         }, 1000 );
     }
 
+    //funksjon som gir elementene en animasjon
     function skoleKnappAnimasjonTo() {
         skoleRegistreringKnapp.style.animation = "leggTilSportSkole 1s";
     }
+    //funksjon som fjerner animasjonen fra elementene
     function skoleKnappAnimasjonEn() {
         setTimeout( function(){
             skoleRegistreringKnapp.style.animation = "";
         }, 1000 );
     }
 
+    //funksjon som gir elementene en animasjon
     function idrettKnappAnimasjonEn() {
         idrettRegistreringKnapp.style.animation = "leggTilSportSkole 1s";
     }
+    //funksjon som fjerner animasjonen fra elementene
     function idrettKnappAnimasjonTo() {
         setTimeout( function(){
             idrettRegistreringKnapp.style.animation = "";
         }, 1000 );
     }
 
-
-
-
-
-
-
-    skoleSkjema.onsubmit = leggTilSkole;
-    idrettSkjema.onsubmit = leggTilIdrett;
+    //kjører funksjonen visLag når det blir lagt til objekter i lag-databasen
     lagDB.on("child_added", visLag);
+    //kjører funksjonen visElever når det blir lagt til objekter i elev-databasen
     elevDB.on("child_added", visElever);
+
+    //kjører funksjonen leggTilSkole når skoleskjemaet blir registrert
+    skoleSkjema.onsubmit = leggTilSkole;
+    //kjører funksjonen leggtilIdrett når idrettskjemaet blir registrert
+    idrettSkjema.onsubmit = leggTilIdrett;
+
+    //kjører funksjonen visSkoleOgIdrettSide når nettsiden lastes inn
     document.onload = visSkoleOgIdrettSide();
 
 </script>

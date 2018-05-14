@@ -16,13 +16,14 @@ body {
     padding: 0;
     overflow-x: hidden;
     display: grid;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: 81px 1fr 40px;
 }
 
 button {
     transition: 0.3s;
 }
 
+/* Gjør så man ikke får en blå ring rundt elementene når de blir trykket på  */
 button:focus, select:focus, [type=text]:focus {outline:0;}
 
 button:hover {
@@ -101,10 +102,13 @@ h3  {
     margin: 0;
 }
 
+/* Gjør så meldingen dukker opp når man skal skrive inn lagnavn  */
 #lagNavn:focus ~ #nbMelding {
     display: block;
 }
-
+#lagNavn:focus ~ .idrettDissapear {
+    display: none;
+}
 
 
 main label {
@@ -164,7 +168,7 @@ table td {
     border: 1px solid black ;
 }
 
-
+/* Animasjon til knappene når man registrer elever eller lag  */
 @keyframes registrering{
     0% {
         background-color: #5c95c9;
@@ -185,7 +189,7 @@ table td {
 
 
 
-
+/* Tilpasser siden til smalere formater  */
 @media (max-width: 300px) {
     main form {
         grid-template-columns: 1fr;
